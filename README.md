@@ -44,13 +44,17 @@ Active Costs (You are only charged when a player is using the server):
 *Free Services:
 
 -S3
+
 -VPC w/ S3 Gateway
 
 *Free in the context of this architecture:
 
 -CloudWatch
+
 -SNS
+
 -StartMinecraftServer AWS Lambda ~  Free invocations under 1 million rquests
+
 -StopMinecraftServer AWS Lambda ~ Free invocations under 1 million rquests
 
 
