@@ -4,14 +4,14 @@ AWS Stateless Minecraft Server
 This project has been my introduction to automation basics and cloud hosting services. Using the foundational knowledge I gained while studying for my AWS solutions architect certification, I set out to build the cheapest possible Minecraft server, with minimal overhead and no manual upkeep. This system can spin up only when needed and stay off when idle. 
 
 >Player connects to listener IP
-  Ingame they will see a motd saying "Starting up please wait ~2 minutes"
+  >Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 >Listener watches for valid TCP handshake and calls AWS Lambda function to start the server from a launch template
-  The launch template bootstraps the instance:
-    =restoring world data from an S3 bucket
-    =start the minecraft server with a custom launch configuration in a tmux session
-    =creates a cloudwatch metric if one does not exist to publish active players report to AWS
-    =dynamically creates a script to report active players connected
-    =runs reportplayers script in a crontab every minute
+  >The launch template bootstraps the instance:
+    >restoring world data from an S3 bucket
+    >start the minecraft server with a custom launch configuration in a tmux session
+    >creates a cloudwatch metric if one does not exist to publish active players report to AWS
+    >dynamically creates a script to report active players connected
+    >runs reportplayers script in a crontab every minute
 >Player reconnects to listener IP and is tunneled to the IP of the spun up instance
 >Player disconnects
 > After ~4 minutes the metric has reported 0 active players and the Alarm goes off
