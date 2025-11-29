@@ -2,7 +2,7 @@ AWS Stateless Minecraft Server (One click deployment coming soon)
 -------------------------------
 
 This project has been my introduction to automation basics and cloud hosting services. Using the foundational knowledge I gained while studying for my AWS solutions architect certification, I set out to build the cheapest possible Minecraft server, with minimal overhead and no manual upkeep. This system can spin up only when needed and stay off when idle. 
-----------------------------------------------
+----------------------------------------
 Flow:
 
 -Player connects to listener IP
