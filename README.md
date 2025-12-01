@@ -16,9 +16,9 @@ This project has been my introduction to automation basics and cloud hosting ser
 
 Flow:
 
-> (1) mc_proxy.py is a port listener and conditional proxy. It will run in a tmux session on a nano ec2 instance for minimum costs.
+* mc_proxy.py is a port listener and conditional proxy. It will run in a tmux session on a nano ec2 instance for minimum costs.
 
-* The Minecraft client connects to port 25565 on the EC2 instance running mc_proxy.py.
+  * The Minecraft client connects to port 25565 on the EC2 instance running mc_proxy.py.
 
 The script inspects the Minecraft handshake packet to determine what the client is doing. - Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
