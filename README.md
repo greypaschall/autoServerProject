@@ -14,8 +14,8 @@ This project has been my introduction to automation basics and cloud hosting ser
 ----------------------------------------
 Flow:
 
--mc_proxy.py will run in a tmux session on a nano ec2 instance for minimum costs
---When a user connects to the public ip of this 
+>mc_proxy.py will run in a tmux session on a nano ec2 instance for minimum costs
+>>When a user connects to the public ip of this 
 
 -Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
