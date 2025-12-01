@@ -37,9 +37,20 @@ Flow and detailed explanation:
 
      * If the handshake's next state is 0x02 this indicates an actual login request from the Minecraft client. -> (Result: Invoke Server Startup)
        * (Context): In the Minecraft TCP sequence, a login packet with a next state of 0x02 will have a username and user ID associated with it.
-       * Only a real player initiating a connection to the server will be able to invoke the startup
+       * Only a real player initiating a connection to the server will be able to invoke the startup.
    
    * When a genuine login attempt is recieved:
+     * Script checks for a tagged EC2 instance (MinecraftServer = True) to see if it is already running.
+
+     * If no instance is found running:
+       * The script invokes the 'StartMinecraftServer' on AWS lambda using boto3, this will start the server with an instance tag (MinecraftServer = True)
+       * Enforces a cooldown period of 180 seconds to prevent multiple invocations during startup
+       * Upon succesful startup, the proxy can now see the insance online via its tag and start tunneling connections over to that server
+       * (Player connects to the IP of the nano tier EC2 hosting the proxy script -> Connection Times out -> ~ 2 minutes later player connects to same IP again -> This time the player connection is tunneled over to large tier EC2 hosting the Minecraft server)
+      
+      * If an instance is already running or has just entered a running state:
+        * The Proxy will switch into its "Forwarding mode." Any connections are tunneled over to the Minecraft Server.
+        * The player does not see this. The server IP they use to join will remain the same for as long as the mc_proxy EC2 instance is running.
     
 
 The script inspects the Minecraft handshake packet to determine what the client is doing. - Ingame they will see a motd saying "Starting up please wait ~2 minutes"
