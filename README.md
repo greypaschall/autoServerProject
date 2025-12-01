@@ -3,18 +3,12 @@ AWS Stateless Minecraft Server
 
 This project has been my introduction to automation basics and cloud hosting services. Using the foundational knowledge I gained while studying for my AWS solutions architect certification, I set out to build the cheapest possible Minecraft server, with minimal overhead and no manual upkeep. This system can spin up only when needed and stay off when idle. 
 
-### Trust 
->
-> I intentionally did **not** provide a "Launch Stack" button or one-click deployment.
-> This project touches EC2, IAM roles, Lambdas, CloudWatch, and SNS.
-> 
-> Instead, the code and architecture are documented so you can:
-> 
-> - Read and understand the scripts.
-> - Create your own IAM roles and policies.
-> - Reproduce the setup manually or adapt it into your own CloudFormation templates.
-> 
-> Treat this repo as a reference implementation, not a turnkey production system.
+(NOTE)
+This project is *not* a turnkey “one-click deploy” solution. It contains the
+> scripts and Lambda functions I run in my own AWS account. I decided against a direct
+> CloudFormation deployment link so that anyone using this can first inspect the code, review
+> the IAM permissions, and decide how they want to integrate it into their own environment.
+
 ----------------------------------------
 Flow:
 
