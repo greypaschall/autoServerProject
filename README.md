@@ -16,11 +16,10 @@ This project has been my introduction to automation basics and cloud hosting ser
 
 Flow:
 
-> (1 ) mc_proxy.py will run in a tmux session on a nano ec2 instance for minimum costs
+> (1) mc_proxy.py is a port listener and conditional proxy. It will run in a tmux session on a nano ec2 instance for minimum costs.
 
->>When a user connects to the public ip of this 
-
--Ingame they will see a motd saying "Starting up please wait ~2 minutes"
+>>A user connects to the public ip of the instance running mc_proxy.py
+>>Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
 -The launch template bootstraps the instance:
   - restoring world data from an S3 bucket
