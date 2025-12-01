@@ -20,17 +20,20 @@ Flow and detailed explanation:
 
   * The Minecraft client connects to port 25565 on the nano EC2 instance.
   * Before anything happens, the script looks at the TCP packet recieved from your Minecraft client. (We will call this the handshake)
-   * Handshake structure:
+   * Minecraft Handshake structure:
       * packet length
       * an ID for the packet (Here it will be 0x00)
       * Protocol Version
       * Target ip and port
       * Next State (0x01 for status request and 0x02 for login attempt)
+      * Additional data if 0x02
    * There are two conditions:
      * If the handshake's next state is 0x01 this indicates a simple status ping. -> (Result: Ignore Handshake)
        * (Context): Every IPv4 address is being constantly scanned by bots checking for a response. Most of the time they are just pinging the ip which results in a next state of 0x01.
        * Without checking the next state, simple status pings can cause the server to startup when it is not supposed to 100+ times a day.
      * If the handshake's next state is 0x02 this indicates an actual login request from the Minecraft client. -> (Result: Invoke Server Startup)
+       * (Context): In the Minecraft TCP sequence, a login packet with a next state of 0x02 will have a username and user ID associated with it.
+       * Only a real player initiating a connection to the server will be able to invoke the startup
 
 The script inspects the Minecraft handshake packet to determine what the client is doing. - Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
