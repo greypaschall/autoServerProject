@@ -51,6 +51,7 @@ Flow and detailed explanation:
       * If an instance is already running or has just entered a running state:
         * The Proxy will switch into its "Forwarding mode." Any connections are tunneled over to the Minecraft Server.
         * The player does not see this. The server IP they use to join will remain the same for as long as the mc_proxy EC2 instance is running.
+* h
     
 
 
