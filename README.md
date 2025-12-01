@@ -56,9 +56,27 @@ Flow and detailed explanation:
 
   * This script in Lambda will check the instance tags and do nothing if the server is already running
   * If the server is not running, it will launch it from a template containing a bootstrap script, and tag it
- 
-    * **Inside bootstrap.sh**
-      *  
+
+    * **The launch template:**
+      * A prebaked Ubuntu AMI containing Server.jar and correlating config files and a world data location 
+      * t3.large instance for running the server (This can vary depending on performance needs and a medium instance works well too)
+      * 8 GiB EBS gp3 volume with 3000 IOPS
+      * user data (where we put the bootstrap script)
+
+    * **Inside bootstrap.sh:**
+      *  Installs dependencies (awscli, tmux, Java OpenJDK, iproute2, net-tools(fallback may not be needed))
+      *  Syncs data from S3 bucket to the in-use EBS volume
+      *  Starts the Minecraft server in a tmux session
+      *  Creates a cloudwatch metric called ActivePlayers (The script preseeds the metric with a temporary value of 1 to prevent alarms while starting up)
+        *  Creates a small Shell script to:
+          * Use iproute2 to track active players and net-tools to also track active players if iproute2 were to fail
+          * Push these metrics to CloudWatch metric data
+      * Runs the shell script in crontab every single minute for active player updates
+   
+   * Now the **StartMinecraftServer** Lambda will see the tagged instance running
+   * It will create a CloudWatch alarm with the ActivePlayers metric.
+     * If the player count falls below 0 long enough for it to be updated in CloudWatch metrics from the crontab script, the alarm will trigger.
+     * The alarm pushes a notification to an SNS topic which the **SaveWorldShutdown** Lambda script is subscribed to
     
 
 
