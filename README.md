@@ -10,11 +10,13 @@ This project has been my introduction to automation basics and cloud hosting ser
 > permissions, and adapt the templates to your own security and cost requirements before
 > deploying.
 >
-> I will document the setup process using pictures an detailed instructions
+> I will document the setup process using pictures an detailed instructions for anyone who would like to implement this cheap automated minecraft server.
+> 
 ----------------------------------------
+
 Flow:
 
->mc_proxy.py will run in a tmux session on a nano ec2 instance for minimum costs
+> (1 ) mc_proxy.py will run in a tmux session on a nano ec2 instance for minimum costs
 
 >>When a user connects to the public ip of this 
 
