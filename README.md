@@ -10,7 +10,7 @@ This project has been my introduction to automation basics and cloud hosting ser
 > permissions, and adapt the templates to your own security and cost requirements before
 > deploying.
 >
-> I will document the setup process using pictures an detailed instructions for anyone who would like to implement this cheap automated minecraft server.
+> I will document the setup process using pictures and detailed instructions for anyone who would like to implement this cheap automated minecraft server.
 > 
 ----------------------------------------
 
@@ -34,6 +34,8 @@ Flow and detailed explanation:
      * If the handshake's next state is 0x02 this indicates an actual login request from the Minecraft client. -> (Result: Invoke Server Startup)
        * (Context): In the Minecraft TCP sequence, a login packet with a next state of 0x02 will have a username and user ID associated with it.
        * Only a real player initiating a connection to the server will be able to invoke the startup
+   * When a genuine login attempt is recieved:
+    
 
 The script inspects the Minecraft handshake packet to determine what the client is doing. - Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
