@@ -53,7 +53,6 @@ Flow and detailed explanation:
         * The player does not see this. The server IP they use to join will remain the same for as long as the mc_proxy EC2 instance is running.
     
 
-The script inspects the Minecraft handshake packet to determine what the client is doing. - Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
 -The launch template bootstraps the instance:
   - restoring world data from an S3 bucket
