@@ -18,8 +18,9 @@ Flow:
 
 > (1) mc_proxy.py is a port listener and conditional proxy. It will run in a tmux session on a nano ec2 instance for minimum costs.
 
->>A user connects to the public ip of the instance running mc_proxy.py
->>Ingame they will see a motd saying "Starting up please wait ~2 minutes"
+* The Minecraft client connects to port 25565 on the EC2 instance running mc_proxy.py.
+
+The script inspects the Minecraft handshake packet to determine what the client is doing. - Ingame they will see a motd saying "Starting up please wait ~2 minutes"
 
 -The launch template bootstraps the instance:
   - restoring world data from an S3 bucket
