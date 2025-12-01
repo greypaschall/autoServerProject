@@ -9,14 +9,15 @@ This project has been my introduction to automation basics and cloud hosting ser
 > not considered best practice. You should always review the code, understand the IAM
 > permissions, and adapt the templates to your own security and cost requirements before
 > deploying.
+>
+> I will document the setup process using pictures an detailed instructions
 ----------------------------------------
 Flow:
 
--Player connects to listener IP
+-mc_proxy.py will run in a tmux session on a nano ec2 instance for minimum costs
+--When a user connects to the public ip of this 
 
 -Ingame they will see a motd saying "Starting up please wait ~2 minutes"
-
--Listener watches for valid TCP handshake and calls AWS Lambda function to start the server from a launch template
 
 -The launch template bootstraps the instance:
   - restoring world data from an S3 bucket
