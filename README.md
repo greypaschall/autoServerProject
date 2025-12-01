@@ -51,7 +51,14 @@ Flow and detailed explanation:
       * If an instance is already running or has just entered a running state:
         * The Proxy will switch into its "Forwarding mode." Any connections are tunneled over to the Minecraft Server.
         * The player does not see this. The server IP they use to join will remain the same for as long as the mc_proxy EC2 instance is running.
-* h
+
+* **StartMinecraftServer AWS Lambda** Lambda is an event driven compute service. When it is invoked from mc_proxy.py, it runs it's own python script within AWS to launch the Minecraft Server instance using a bootstrapped launch template, tagging the instance with (MinecraftServer = True)
+
+  * This script in Lambda will check the instance tags and do nothing if the server is already running
+  * If the server is not running, it will launch it from a template containing a bootstrap script, and tag it
+ 
+    * **Inside bootstrap.sh**
+      *  
     
 
 
