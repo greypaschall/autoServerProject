@@ -111,11 +111,11 @@ This project has been my introduction to automation basics and cloud hosting ser
     * Finally, it deletes the corresponding CloudWatch alarm using its name (ex. `AutoShutdown-<instance-id>`).
   
 
-
+----------------------------------------
 
   
 
-Costs:
+**Costs:**
 ___________
 
 *Idle Costs:
