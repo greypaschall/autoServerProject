@@ -19,7 +19,7 @@ This project has been my introduction to automation basics and cloud hosting ser
 Reference-style: 
 ![alt text][logo]
 
-[logo]: https://https://github.com/greypaschall/autoServerProject/blob/main/Diagrams%20us-east-1.pdf "Logo Title Text 2"
+[logo]: https://github.com/greypaschall/autoServerProject/blob/main/Diagrams%20us-east-1-1.png "Logo Title Text 2"
 
 
 ----------------------------------------
