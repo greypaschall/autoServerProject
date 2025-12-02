@@ -1,3 +1,47 @@
+flowchart TD
+
+    %% Client
+    A[Minecraft Clients<br>Players] -->|Port 25565| B
+
+    %% Proxy EC2
+    subgraph Proxy["Always-On Proxy EC2 Instance<br>(mc_proxy.py in tmux)"]
+        B[Proxy Listens on 25565<br>Parses Handshake<br>0x01 = status ping<br>0x02 = login attempt]
+    end
+
+    %% Conditional routing
+    B -->|next_state = 0x01<br>Status Ping Ignored| B
+    B -->|next_state = 0x02<br>Real Login Attempt| C
+
+    %% Start Lambda
+    C --> D[StartMinecraftServer Lambda<br>Launches MC server if not running]
+
+    %% Launch Template
+    D --> E[EC2 Launch Template<br>(Ubuntu + bootstrap.sh)]
+
+    %% Minecraft Server EC2
+    subgraph Server["Temporary Minecraft Server EC2"]
+        E --> F[bootstrap.sh<br>- Restore worlds from S3<br>- Start PaperMC in tmux<br>- Create ActivePlayers metric<br>- Cron reports every minute]
+    end
+
+    %% CloudWatch Metric + Alarm
+    F -->|Metric: ActivePlayers<br>InstanceId=shared| G[CloudWatch Alarm<br>AutoShutdown-<instance-id>]
+
+    %% SNS
+    G -->|Alarm Triggered| H[SNS Topic<br>MinecraftShutdownTopic]
+
+    %% Shutdown Lambda
+    H --> I[SaveWorldShutdown Lambda<br>- Resolve instance via tag<br>- Run mcsave.sh via SSM<br>- Sync worlds to S3<br>- Terminate instance<br>- Delete alarm]
+
+    %% S3 Storage
+    I --> J[(S3 Bucket<br>World Backups)]
+
+    %% Styling
+    classDef aws fill:#232F3E,stroke:#ffffff,stroke-width:1px,color:#ffffff;
+    class Proxy,Server,Start,Shutdown,LaunchTemplate,SNS,CloudWatch,S3 aws;
+
+
+
+
 AWS Stateless Minecraft Server
 -------------------------------
 
