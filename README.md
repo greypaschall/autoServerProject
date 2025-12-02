@@ -1,5 +1,4 @@
 
-
 AWS Stateless Minecraft Server
 -------------------------------
 
@@ -15,8 +14,14 @@ This project has been my introduction to automation basics and cloud hosting ser
 > I will document the setup process using pictures and detailed instructions for anyone who would like to implement this cheap automated minecraft server.
 > 
 ----------------------------------------
+**Architectural Diagram**
 
-Flow and detailed explanation:
+
+
+----------------------------------------
+
+
+**Flow and detailed explanation:**
 
 * **mc_proxy.py** is a port listener and conditional proxy. It will run in a tmux session on a nano EC2 instance for minimum costs.
 
