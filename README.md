@@ -86,10 +86,19 @@ Flow and detailed explanation:
 * **SaveWorldShutdown AWS Lambda** This one handles autoshutdown and saving world files back to the S3 bucket. It also deletes the CloudWatch alarm.
 
   *  The Lambda receives the alarm event from SNS and inspects the CloudWatch `Trigger.Dimensions`
-  *  There it finds `InstanceId=shared` — this is expected, because the metric is intentionally published with a shared dimension rather than the real EC2 instance-id. (*The whole reason for using a shared metric is to prevent a new metric being created each time*)
-  *  The instance-id is double checked against the tag to ensure it is the right one
-  *  First data
-    
+  *  There it finds `InstanceId=shared` — this is expected, because the metric is intentionally published with a shared dimension rather than the real EC2 instance-id. (*The whole reason for using a shared metric is to prevent a new metric being created on each start-up.*)
+  * Because `InstanceId` is `"shared"`, the Lambda resolves the **actual** Minecraft server InstanceId by:
+    * Calling `DescribeInstances` with filters:
+      * `tag:MinecraftServer = True`
+      * `instance-state-name = running or pending`
+    * It takes the first matching instance and treats **that** `InstanceId` as the active server
+  * The resolved instance-id is then double-checked confimred with the same tag as an extra safety measure
+  * After the instance selected for shutdown is confirmed to be the correct one:
+    * The Lambda uses SSM to run `mcsave.sh` on the instance so worlds are safely saved and synced.
+    * It waits for the SSM command to complete or timeout.
+    * It sends a terminate command for that EC2 instance.
+    * Finally, it deletes the corresponding CloudWatch alarm using its name (ex. `AutoShutdown-<instance-id>`).
+  
 
 
 
