@@ -11,7 +11,7 @@ This project has been my introduction to automation basics and cloud hosting ser
 > permissions, and adapt the templates to your own security and cost requirements before
 > deploying.
 >
-> I will document the setup process using pictures and detailed instructions for anyone who would like to implement this cheap automated minecraft server.
+> **I will document the setup process using pictures and detailed instructions for anyone who would like to implement this cheap automated minecraft server.**
 > 
 ----------------------------------------
 **Architectural Diagram:**
@@ -146,6 +146,8 @@ This project has been my introduction to automation basics and cloud hosting ser
 -StopMinecraftServer AWS Lambda ~ Free invocations under 1 million rquests
 
 
+----------------------------------------
 
+**Instructions for Implementation:**
 
 
