@@ -28,7 +28,7 @@ This project has been my introduction to automation basics and cloud hosting ser
 
 * **mc_proxy.py** is a port listener and conditional proxy. It will run in a tmux session on a nano EC2 instance for minimum costs.
 
-  * The Minecraft client connects to port 25565 on the nano EC2 instance.
+  * The Minecraft client connects to port `25565` on the nano EC2 instance.
 
   * Before anything happens, the script looks at the TCP packet recieved from your Minecraft client. (We will call this the handshake)
    
@@ -41,34 +41,34 @@ This project has been my introduction to automation basics and cloud hosting ser
       * Additional data if 0x02
    
    * There are two conditions:
-     * If the handshake's next state is 0x01 this indicates a simple status ping. -> (Result: Ignore Handshake)
+     * If the handshake's next state is `0x01` this indicates a simple status ping. -> (Result: Ignore Handshake)
        * (Context): Every IPv4 address is being constantly scanned by bots checking for a response. Most of the time they are just pinging the ip which results in a next state of 0x01.
        * Without checking the next state, simple status pings can cause the server to startup when it is not supposed to 100+ times a day.
 
-     * If the handshake's next state is 0x02 this indicates an actual login request from the Minecraft client. -> (Result: Invoke Server Startup)
-       * (Context): In the Minecraft TCP sequence, a login packet with a next state of 0x02 will have a username and user ID associated with it.
+     * If the handshake's next state is `0x02` this indicates an actual login request from the Minecraft client. -> (Result: Invoke Server Startup)
+       * (Context): In the Minecraft TCP sequence, a login packet with a next state of `0x02` will have a username and user ID associated with it.
        * Only a real player initiating a connection to the server will be able to invoke the startup.
    
    * When a genuine login attempt is recieved:
-     * Script checks for a tagged EC2 instance (MinecraftServer = True) to see if it is already running.
+     * Script checks for a tagged EC2 instance `MinecraftServer = True` to see if it is already running.
 
      * If no instance is found running:
-       * The script invokes the 'StartMinecraftServer' on AWS lambda using boto3, this will start the server with an instance tag (MinecraftServer = True)
+       * The script invokes `StartMinecraftServer` on AWS lambda using `boto3`, this will start the server with an instance tag `MinecraftServer = True`
        * Enforces a cooldown period of 180 seconds to prevent multiple invocations during startup
        * Upon succesful startup, the proxy can now see the insance online via its tag and start tunneling connections over to that server
        * (Player connects to the IP of the nano tier EC2 hosting the proxy script -> Connection Times out -> ~ 2 minutes later player connects to same IP again -> This time the player connection is tunneled over to large tier EC2 hosting the Minecraft server)
       
       * If an instance is already running or has just entered a running state:
         * The Proxy will switch into its "Forwarding mode." Any connections are tunneled over to the Minecraft Server.
-        * The player does not see this. The server IP they use to join will remain the same for as long as the mc_proxy EC2 instance is running.
+        * The player does not see this. The server IP they use to join will remain the same for as long as the proxy EC2 instance is running.
 
-* **StartMinecraftServer AWS Lambda** Lambda is an event driven compute service. When it is invoked from mc_proxy.py, it runs it's own python script within AWS to launch the Minecraft Server instance using a bootstrapped launch template, tagging the instance with (MinecraftServer = True)
+* **StartMinecraftServer AWS Lambda** Lambda is an event driven compute service. When it is invoked from `mc_proxy.py`, it runs it's own python script within AWS to launch the Minecraft Server instance using a bootstrapped launch template, tagging the instance with `MinecraftServer = True`
 
   * This script in Lambda will check the instance tags and do nothing if the server is already running
   * If the server is not running, it will launch it from a template containing a bootstrap script, and tag it
 
     * **The launch template:**
-      * A prebaked Ubuntu AMI containing Server.jar and correlating config files and a world data location
+      * A prebaked Ubuntu AMI containing `server.jar` and correlating config files and a world data location
         * The AMI will also contain `mcsave.sh`, a shell script to be called during the shut-down phase  
       * t3.large instance for running the server (This can vary depending on performance needs and a medium instance works well too)
       * 8 GiB EBS gp3 volume with 3000 IOPS
@@ -78,7 +78,7 @@ This project has been my introduction to automation basics and cloud hosting ser
       *  Installs dependencies (awscli, tmux, Java OpenJDK, iproute2, net-tools(fallback may not be needed))
       *  Syncs data from S3 bucket to the in-use EBS volume
       *  Starts the Minecraft server in a tmux session
-      * Creates a shared CloudWatch metric called ActivePlayers  
+      * Creates a shared CloudWatch metric called `ActivePlayers`  
         (The script preseeds the metric with a temporary value of 1 to prevent alarms while starting up)
       * Creates a small Shell script that:
         * Uses iproute2 (`ss`) to track active players  
