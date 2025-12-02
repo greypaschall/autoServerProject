@@ -67,33 +67,32 @@ Flow and detailed explanation:
       *  Installs dependencies (awscli, tmux, Java OpenJDK, iproute2, net-tools(fallback may not be needed))
       *  Syncs data from S3 bucket to the in-use EBS volume
       *  Starts the Minecraft server in a tmux session
-      *  Creates a cloudwatch metric called ActivePlayers (The script preseeds the metric with a temporary value of 1 to prevent alarms while starting up)
-        *  Creates a small Shell script to:
-          * Use iproute2 to track active players and net-tools to also track active players if iproute2 were to fail
-          * Push these metrics to CloudWatch metric data
-      * Runs the shell script in crontab every single minute for active player updates
+      * Creates a shared CloudWatch metric called ActivePlayers  
+        (The script preseeds the metric with a temporary value of 1 to prevent alarms while starting up)
+      * Creates a small Shell script that:
+        * Uses iproute2 (`ss`) to track active players  
+        * Uses net-tools (`netstat`) as a fallback if `ss` fails  
+        * Pushes the metric data to CloudWatch
+      * Runs the shell script through crontab every single minute for active player updates
+
    
-   * Now the **StartMinecraftServer** Lambda will see the tagged instance running
-   * It will create a CloudWatch alarm with the ActivePlayers metric.
-     * If the player count falls below 0 long enough for it to be updated in CloudWatch metrics from the crontab script, the alarm will trigger.
-     * The alarm pushes a notification to an SNS topic which the **SaveWorldShutdown** Lambda script is subscribed to
+   * Now back to the **StartMinecraftServer** Lambda will see the tagged instance running
+   * It will create a CloudWatch alarm tied to the shared **ActivePlayers** metric
+     * The alarm name is formatted as `AutoShutdown-<instance-id>` (Example: `AutoShutdown-i-0123456789abcdef0`) — Though this isnt used to share the actual instance id with Lambda, it is used to delete the alarm later on.
+     * The metric uses a shared dimension: `InstanceId=shared`, so the alarm is based on `MinecraftServer / ActivePlayers / InstanceId=shared`
+     * If the player count falls below 0 long enough for it to be updated in CloudWatch metrics (3 minutes) the alarm will trigger.
+     * When this happens, CloudWatch sends an event to an SNS topic, which the **SaveWorldShutdown** Lambda is subscribed to.
+    
+* **SaveWorldShutdown AWS Lambda** This one handles autoshutdown and saving world files back to the S3 bucket. It also deletes the CloudWatch alarm.
+
+  *  The Lambda receives the alarm event from SNS and inspects the CloudWatch `Trigger.Dimensions`
+  *  There it finds `InstanceId=shared` — this is expected, because the metric is intentionally published with a shared dimension rather than the real EC2 instance-id. (*The whole reason for using a shared metric is to prevent a new metric being created each time*)
+  *  The instance-id is double checked against the tag to ensure it is the right one
+  *  First data
     
 
 
--The launch template bootstraps the instance:
-  - restoring world data from an S3 bucket
-  - start the minecraft server with a custom launch configuration in a tmux session
-  - creates a cloudwatch metric if one does not exist to publish active players report to AWS
-  - dynamically creates a script to report active players connected
-  - runs reportplayers script in a crontab every minute
-  
--Player reconnects to listener IP and is tunneled to the IP of the spun up instance
 
--After all players have disconnected, wait for metric update
-
--After ~4 minutes the metric has reported 0 active players and the Alarm goes off
-
--Alarm triggers SNS to call the lambda function to save the world back to S3, terminate the server instance, and delete the cloudwatch alarm
   
 
 Costs:
