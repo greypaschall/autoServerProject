@@ -58,7 +58,8 @@ Flow and detailed explanation:
   * If the server is not running, it will launch it from a template containing a bootstrap script, and tag it
 
     * **The launch template:**
-      * A prebaked Ubuntu AMI containing Server.jar and correlating config files and a world data location 
+      * A prebaked Ubuntu AMI containing Server.jar and correlating config files and a world data location
+        * The AMI will also contain `mcsave.sh`, a shell script to be called during the shut-down phase  
       * t3.large instance for running the server (This can vary depending on performance needs and a medium instance works well too)
       * 8 GiB EBS gp3 volume with 3000 IOPS
       * user data (where we put the bootstrap script)
@@ -86,7 +87,7 @@ Flow and detailed explanation:
 * **SaveWorldShutdown AWS Lambda** This one handles autoshutdown and saving world files back to the S3 bucket. It also deletes the CloudWatch alarm.
 
   *  The Lambda receives the alarm event from SNS and inspects the CloudWatch `Trigger.Dimensions`
-  *  There it finds `InstanceId=shared` — this is expected, because the metric is intentionally published with a shared dimension rather than the real EC2 instance-id. (*The whole reason for using a shared metric is to prevent a new metric being created on each start-up.*)
+  *  There it finds `InstanceId=shared` — this is expected, because the metric is intentionally published with a shared dimension rather than the real EC2 instance-id. (*The whole reason for using a shared metric is to prevent a new metric from being created on each start-up.*)
   * Because `InstanceId` is `"shared"`, the Lambda resolves the **actual** Minecraft server InstanceId by:
     * Calling `DescribeInstances` with filters:
       * `tag:MinecraftServer = True`
@@ -94,7 +95,7 @@ Flow and detailed explanation:
     * It takes the first matching instance and treats **that** `InstanceId` as the active server
   * The resolved instance-id is then double-checked confimred with the same tag as an extra safety measure
   * After the instance selected for shutdown is confirmed to be the correct one:
-    * The Lambda uses SSM to run `mcsave.sh` on the instance so worlds are safely saved and synced.
+    * The Lambda uses SSM to run `mcsave.sh` on the instance **before** termination so worlds are safely saved and synced.
     * It waits for the SSM command to complete or timeout.
     * It sends a terminate command for that EC2 instance.
     * Finally, it deletes the corresponding CloudWatch alarm using its name (ex. `AutoShutdown-<instance-id>`).
