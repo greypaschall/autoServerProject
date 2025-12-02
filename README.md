@@ -2,7 +2,7 @@
 AWS Stateless Minecraft Server
 -------------------------------
 
-This project has been my introduction to automation basics and cloud hosting services. Using the foundational knowledge I gained while studying for my **AWS** solutions architect certification and **Python**, I set out to build the cheapest possible Minecraft server, with minimal overhead and no manual upkeep. This system can spin up a server only when needed and terminate the server when players are offline without any world data being lost. If implemented correctly, this is much cheaper and much more powerful than paying for a game hosting service.
+This project has been my introduction to automation basics and cloud hosting services. Using the foundational knowledge I gained while studying for my **AWS** solutions architect certification and **Python**, I set out to build the cheapest possible Minecraft server, with minimal overhead and no manual upkeep. Usually when someone wants to host a game server (Minecraft for example), it is common for them to pay for a game host or open ports on their home router. Not only is this method more cheap and secure, but with the addition of a few **Python** and **Shell** scripts, we can remove any overhead relating to server management.
 
 > **Note on CloudFormation:**  
 > I intentionally do **not** provide a one-click CloudFormation deployment link in this repo.  
