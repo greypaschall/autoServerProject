@@ -116,7 +116,7 @@ This project has been my introduction to automation basics and cloud hosting ser
   
 
 **Costs:**
-___________
+
 
 *Idle Costs:
 
