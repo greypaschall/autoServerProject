@@ -14,8 +14,12 @@ This project has been my introduction to automation basics and cloud hosting ser
 > I will document the setup process using pictures and detailed instructions for anyone who would like to implement this cheap automated minecraft server.
 > 
 ----------------------------------------
-**Architectural Diagram**
+**Architectural Diagram:**
 
+Reference-style: 
+![alt text][logo]
+
+[logo]: https://https://github.com/greypaschall/autoServerProject/blob/main/Diagrams%20us-east-1.pdf "Logo Title Text 2"
 
 
 ----------------------------------------
