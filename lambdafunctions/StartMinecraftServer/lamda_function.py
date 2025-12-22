@@ -3,7 +3,7 @@ import time
 
 REGION = "us-east-1"
 LAMBDA_SHUTDOWN = "SaveWorldShutdown"  # your shutdown lambda name
-ACCOUNT_ID = "282681674590"                   # your AWS account ID
+ACCOUNT_ID = "00000000000"                   # your AWS account ID
 LAUNCH_TEMPLATE_NAME = "LaunchMCServer"       # your template name
 
 ec2 = boto3.client('ec2', region_name=REGION)
