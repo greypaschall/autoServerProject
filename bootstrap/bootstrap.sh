@@ -3,6 +3,7 @@
 
 sudo -u ubuntu bash <<'EOF'
 LOGFILE="/home/ubuntu/bootstrap.log"
+# ---Your S3 Bucket here---
 BUCKET="greysminecraftserver"
 MC_DIR="/home/ubuntu/minecraft"
 
