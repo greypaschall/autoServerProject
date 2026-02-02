@@ -9,7 +9,7 @@ This project has been my introduction to automation basics and cloud hosting ser
 > Blindly launching infrastructure templates from GitHub into your own AWS account is generally
 > not considered best practice. You should always review the code, understand the IAM
 > permissions, and adapt the templates to your own security and cost requirements before
-> deploying.
+> deploying. Any examples provided are intended for learning and customization, not direct production use.
 
 ----------------------------------------
 **Architectural Diagram:**
