@@ -118,25 +118,28 @@ This project has been my introduction to automation basics and cloud hosting ser
 **Costs:**
 
 
-**Idle Costs (Proxy / Control Plane):
+**Idle Costs (Proxy / Control Plane):**
 
 -t4g.nano EC2 instance ~ $3.10/month (This small Ubuntu server runs the TCP listener in a tmux session 24/7)
   - associated EBS volume ~ $0.80/month (gp2 volume with 8gb stores Python listener script)
+
 *~$3.90 a month*
 
-**Active Costs (You are only charged when a player is using the server):
+**Active Costs (You are only charged when a player is using the server):**
 
 -t3.large EC2 instance ~ $0.0832/hour 
   - associated EBS volume ~ $0.00088/hour (temporary volume provisioned at startup and deleted at shutdown)
+
 *~$0.084/hour while in use*
 
-**Low-Cost / Usage-Based Services:
+**Low-Cost / Usage-Based Services:**
 
 -S3
 
 -VPC w/ S3 Gateway
 
 -CloudWatch
+
 *~Pennies per month. Varies*
 
 -SNS
