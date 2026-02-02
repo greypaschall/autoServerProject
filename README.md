@@ -1,5 +1,5 @@
 
-AWS Stateless Minecraft Server
+AWS Stateless Minecraft Server (Serverless orchestration of a stateful workload)
 -------------------------------
 
 This project has been my introduction to automation basics and cloud hosting services. Using the foundational knowledge I gained while studying for my **AWS** solutions architect certification and **Python**, I set out to build the cheapest possible Minecraft server, with minimal overhead and no manual upkeep. Usually when someone wants to host a game server (Minecraft for example), it is common for them to pay for a game host or open ports on their home router. Not only is this method more cheap and secure, but with the addition of a few **Python** and **Shell** scripts, we can remove any overhead relating to server management.
