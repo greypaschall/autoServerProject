@@ -10,9 +10,7 @@ This project has been my introduction to automation basics and cloud hosting ser
 > not considered best practice. You should always review the code, understand the IAM
 > permissions, and adapt the templates to your own security and cost requirements before
 > deploying.
->
-> **I will document the setup process using pictures and detailed instructions for anyone who would like to implement this cheap automated minecraft server.**
-> 
+
 ----------------------------------------
 **Architectural Diagram:**
 
