@@ -141,7 +141,8 @@ This project has been my introduction to automation basics and cloud hosting ser
 *Free in the context of this architecture:
 
 -CloudWatch
-*Pennies per month. Varies*
+
+*~Pennies per month. Varies*
 
 -SNS
 
